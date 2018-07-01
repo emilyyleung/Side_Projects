@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="../three/three.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script>
+        var ThreeDScene = new Function();
+
+        ThreeDScene.prototype.scene = {};
+        ThreeDScene.prototype.camera = {};
+        ThreeDScene.prototype.renderer = {};
+
+        // Dimensions
+        ThreeDScene.prototype.width = window.innerWidth;
+        ThreeDScene.prototype.height = window.innerHeight;
+
+        // Init scene and start animation ----------------------------------------
+        ThreeDScene.prototype.init = function init() {
+          this.scene = new THREE.Scene();
+          this.scene.fog = new THREE.Fog(0, 1, 1000)
+          this.initCamera();
+          this.initRenderer();
+          this.initLight();
+
+          this.initShapes();
+          this.render();
+        }
+
+        // Init Camera -----------------------------------------------------------
+        ThreeDScene.prototype.initCamera = function() {
+          this.camera = new THREE.PerspectiveCamera( 75, this.width / this.height, 1, 1000 );
+          this.camera.position.y = 0;
+          this.camera.position.z = 400;
+          this.camera.position.x = 0;
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+        }
+
+        // Init Renderer ---------------------------------------------------------
+        ThreeDScene.prototype.initRenderer = function() {
+          this.renderer = new THREE.WebGLRenderer({ antialias: true });
+          this.renderer.setSize( this.width, this.height );
+
+          // Background Color
+          this.renderer.setClearColor(
+            0x000000,
+            1
+          );
+
+          // Enable shadowmaps
+          this.renderer.shadowMap.enabled = true;
+          this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+          // Set autoclear to false. We're doing this manually
+          // This is required for shaders to work
+          this.renderer.autoClear = true;
+          document.body.appendChild( this.renderer.domElement );
+
+          return;
+        }
+
+        // Init Lighting ---------------------------------------------------------
+        ThreeDScene.prototype.initLight = function() {
+
+
+          var h = new THREE.AmbientLight(3487029);
+          this.scene.add(h);
+
+          var w = new THREE.DirectionalLight( 16777215 );
+          w.position.set(1,1,1).normalize(),
+          this.scene.add(w)
+        }
+
+        // Init Shapes -----------------------------------------------------------
+        ThreeDScene.prototype.initShapes = function() {
+          var self = this;
+
+          var object = new THREE.Object3D();
+          var circle = new THREE.Object3D();
+          var skelet = new THREE.Object3D();
+          var particle = new THREE.Object3D();
+
+          this.scene.add(object);
+          this.scene.add(circle);
+          this.scene.add(skelet);
+          this.scene.add(particle);
+
+          for (var e = new THREE.TetrahedronGeometry(2, 0),
+                   n = new THREE.TetrahedronGeometry(2, 2),
+                   a = new THREE.MeshPhongMaterial({
+                        color: 3487029,
+                        flatShading: true
+                   }),
+                   r = new THREE.MeshPhongMaterial({
+                        color: 1118481,
+                        flatShading: true
+                   }),
+                   t = 0; 50 > t; t++
+          ) {
+
+            var o = new THREE.Mesh( e, a );
+                o.position.set( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize(),
+                o.position.multiplyScalar( 700 * Math.random()),
+                o.rotation.set( 2 * Math.random(), 2 * Math.random(), 2 * Math.random()),
+                o.scale.x = o.scale.y = o.scale.z = 15,
+                object.add(o)
+          }
+
+          for ( var t = 0; 1000 > t; t++) {
+            var o = new THREE.Mesh( n, r );
+                o.position.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize(),
+                o.position.multiplyScalar( 700 * Math.random()),
+                o.rotation.set(2 * Math.random(), 2 * Math.random(), 2 * Math.random()),
+                particle.add(o)
+          }
+
+          var i = new THREE.IcosahedronGeometry(7,1),
+              d = new THREE.IcosahedronGeometry(15,1),
+              c = new THREE.MeshPhongMaterial({
+                color: 0xFFA737,
+                flatShading: true
+              })
+              s = new THREE.MeshPhongMaterial({
+                color: 0xFDFFFC,
+                wireframe: !0,
+                side: THREE.DoubleSide
+              }),
+              l = new THREE.Mesh(i,c);
+
+          l.scale.x = l.scale.y = l.scale.z = 12,
+          circle.add(l);
+
+          var E = new THREE.Mesh(d,s);
+          E.scale.x = E.scale.y = E.scale.z = 8,
+          skelet.add(E);
+
+        }
+
+        // Render Method ---------------------------------------------------------
+        ThreeDScene.prototype.render = function() {
+          var collection = this.scene.children
+          var spinnyEffect = function(thingToSpin, xSpeed, ySpeed) {
+            thingToSpin.rotation.x += xSpeed;
+            thingToSpin.rotation.y += ySpeed;
+
+            return thingToSpin;
+          }
+
+          // spinnyEffect(collection[0], 0.003, 0.003); // AmbientLight
+          // spinnyEffect(collection[1], 0, 0.004); // DirectionalLight
+          spinnyEffect(collection[2], 0.003, 0.003); // object / TetrahedronGeometry 'e'
+          spinnyEffect(collection[3], -0.002, -0.002); // circle / IcosahedronGeometry 'i'
+          spinnyEffect(collection[4], -0.001, 0.001); // skelet / IcosahedronGeometry 'd'
+          spinnyEffect(collection[5], 0, -0.004); // particle / TetrahedronGeometry 'n'
+
+          window.addEventListener('resize', onWindowResize.bind(this), false);
+
+
+          requestAnimationFrame( this.render.bind(this) );
+          this.renderer.render( this.scene, this.camera );
+        }
+
+        function onWindowResize(e) {
+          this.camera.updateProjectionMatrix();
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          // console.log(e)
+        }
+
+        // Run when DOM is ready
+        document.addEventListener("DOMContentLoaded", function() {
+          // Make sure the console is clear
+          console.clear();
+
+          // Initiate Scene
+          var threeDScene = new ThreeDScene();
+          threeDScene.init();
+        });
+    </script>
+
+  </body>
+</html>

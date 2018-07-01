@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="../three/three.min.js"></script>
+    <script src="../three/OrbitControls.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script>
+        var ThreeDScene = new Function();
+
+        ThreeDScene.prototype.scene = {};
+        ThreeDScene.prototype.camera = {};
+        ThreeDScene.prototype.renderer = {};
+
+        // Dimensions
+        ThreeDScene.prototype.width = window.innerWidth;
+        ThreeDScene.prototype.height = window.innerHeight;
+
+        // Init scene and start animation ----------------------------------------
+        ThreeDScene.prototype.init = function init() {
+          this.scene = new THREE.Scene();
+          this.scene.fog = new THREE.Fog(0, 1, 1500)
+          this.initCamera();
+          this.initRenderer();
+          this.initLight();
+
+          this.initShapes();
+          this.render();
+        }
+
+        // Init Camera -----------------------------------------------------------
+        ThreeDScene.prototype.initCamera = function() {
+          this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height, 1, 50000 );
+          this.camera.position.y = 0;
+          this.camera.position.z = 1000;
+          this.camera.position.x = 0;
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+
+          this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
+				  this.controls.enablePan = false;
+          this.controls.enableZoom = false;
+
+        }
+
+        // Init Renderer ---------------------------------------------------------
+        ThreeDScene.prototype.initRenderer = function() {
+          this.renderer = new THREE.WebGLRenderer({ antialias: true });
+          this.renderer.setSize( this.width, this.height );
+
+          // Background Color
+          this.renderer.setClearColor(
+            0x000000,
+            1
+          );
+
+          // Enable shadowmaps
+          this.renderer.shadowMap.enabled = true;
+          this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+          // Set autoclear to false. We're doing this manually
+          // This is required for shaders to work
+          this.renderer.autoClear = true;
+          document.body.appendChild( this.renderer.domElement );
+
+          return;
+        }
+
+        // Init Lighting ---------------------------------------------------------
+        ThreeDScene.prototype.initLight = function() {
+
+
+          var h = new THREE.AmbientLight(3487029);
+          this.scene.add(h);
+
+          var w = new THREE.DirectionalLight( 16777215 );
+          w.position.set(1,1,1).normalize(),
+          this.scene.add(w)
+        }
+
+        // Init Shapes -----------------------------------------------------------
+        ThreeDScene.prototype.initShapes = function() {
+          var self = this;
+
+          var object = new THREE.Object3D();
+          var circle = new THREE.Object3D();
+          var skelet = new THREE.Object3D();
+          var particle = new THREE.Object3D();
+          var mountainTerrain = new THREE.Object3D();
+
+          // this.scene.add(object);
+          // this.scene.add(circle);
+          // this.scene.add(skelet);
+          // this.scene.add(particle);
+
+          this.scene.add(mountainTerrain);
+
+          var terrainPlane = new THREE.PlaneGeometry( 500, 500, 14, 14 );
+          var length = terrainPlane.vertices.length;
+
+          for (var i = 0; i < length; i++) {
+            terrainPlane.vertices[i].z = Math.floor((Math.random() * 30) + 1);
+            // Math.random() = a number between 0 and 1
+          }
+
+          var terrainMaterial = new THREE.MeshBasicMaterial({
+            color: 'white',
+            flatShading: true,
+            vertexColors: THREE.FaceColors,
+            wireframe: true
+            // color: 'white'
+          });
+
+          var terrainMaterial1 = new THREE.MeshLambertMaterial({
+            color: 0xD8D6A3,
+            flatShading: true,
+            vertexColors: THREE.FaceColors
+          })
+
+          var terrain = new THREE.Mesh(terrainPlane, terrainMaterial);
+          terrain.overdraw = true;
+          terrain.rotation.x = 90;
+          terrain.rotation.z = 45;
+          mountainTerrain.add(terrain);
+
+        }
+
+        // Render Method ---------------------------------------------------------
+        ThreeDScene.prototype.render = function() {
+          var collection = this.scene.children
+
+          for( var i in collection[2].children[0].geometry.vertices[""] ){
+            // console.log(i)
+          }
+
+
+          // console.log(collection[2].children[0].geometry.vertices["0"])
+
+          window.addEventListener('resize', onWindowResize.bind(this), false);
+
+          requestAnimationFrame( this.render.bind(this) );
+
+          this.controls.update();
+
+          this.renderer.render( this.scene, this.camera );
+        }
+
+        function onWindowResize(e) {
+          this.camera.updateProjectionMatrix();
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          // console.log(e)
+        }
+
+        // Run when DOM is ready
+        document.addEventListener("DOMContentLoaded", function() {
+          // Make sure the console is clear
+          console.clear();
+
+          // Initiate Scene
+          var threeDScene = new ThreeDScene();
+          threeDScene.init();
+        });
+    </script>
+
+  </body>
+</html>

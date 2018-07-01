@@ -1,0 +1,288 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="../../three/three.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script>
+      var ThreeDScene = new Function();
+
+      ThreeDScene.prototype.scene = {};
+      ThreeDScene.prototype.camera = {};
+      ThreeDScene.prototype.renderer = {};
+
+      ThreeDScene.prototype.composer = {};
+      ThreeDScene.prototype.clock = {};
+
+      // Dimensions
+      ThreeDScene.prototype.width = window.innerWidth;
+      ThreeDScene.prototype.height = window.innerHeight;
+
+      // Mouse position
+      ThreeDScene.prototype.mouse = {
+        x: 0,
+        y: 0
+      }
+
+      // Init scene and start animation ----------------------------------------
+      ThreeDScene.prototype.init = function init() {
+        this.scene = new THREE.Scene();
+        this.initCamera();
+        this.initRenderer();
+        this.initLight();
+
+        this.initShapes();
+
+        this.initClock();
+        // this.initParticleSystem2();
+        this.initParticleSystem1();
+        this.initMouseEvents();
+
+        this.render();
+      }
+
+      // Init Camera -----------------------------------------------------------
+      ThreeDScene.prototype.initCamera = function() {
+        this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height, 1, 3000 );
+        this.camera.position.y = 400;
+        this.camera.position.z = 0;
+        this.camera.position.x = 0;
+        this.camera.updateProjectionMatrix();
+        this.camera.lookAt(this.scene.position);
+      }
+
+      // Init Clock ------------------------------------------------------------
+      ThreeDScene.prototype.initClock = function() {
+        this.clock = new THREE.Clock(true);
+      }
+
+      // Init Renderer ---------------------------------------------------------
+      ThreeDScene.prototype.initRenderer = function() {
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setSize( this.width, this.height );
+
+        // Background Color
+        this.renderer.setClearColor( 0x030419, 1 );
+
+        // Enable shadowmaps
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // Set autoclear to false. We're doing this manually
+        // This is required for shaders to work
+        this.renderer.autoClear = true;
+        document.body.appendChild( this.renderer.domElement );
+
+        console.log(this.renderer);
+
+        return;
+      }
+
+      // Init Lighting ---------------------------------------------------------
+      ThreeDScene.prototype.initLight = function() {
+
+        var light = new THREE.DirectionalLight( 0xffffff, 1.2 );
+        light.position.set( 60, 100, 20 );
+        this.scene.add(light);
+
+      }
+
+      // Init Shapes -----------------------------------------------------------
+      ThreeDScene.prototype.initShapes = function() {
+        var self = this;
+        var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+        var material = new THREE.MeshPhongMaterial( { color: 0x000000 } );
+        material.transparent = true;
+        var cube = new THREE.Mesh( geometry, material );
+        cube.rotation.z = 10;
+        cube.rotation.y = 10;
+        // console.log(cube)
+        this.scene.add( cube );
+
+        var geo = new THREE.EdgesGeometry( geometry );
+        var mat = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 3 });
+        var wireframe = new THREE.LineSegments( geo, mat );
+        wireframe.rotation.z = 10;
+        wireframe.rotation.y = 10;
+
+        wireframe.animate = function(delta, elapsed) {
+          this.rotation.x += 0.5 * elapsed / 20 //(10 + 10 * Math.sin(this.offset + elapsed / 20)) * delta;
+        }
+
+        this.scene.add( wireframe );
+      }
+
+      // Render Method ---------------------------------------------------------
+      ThreeDScene.prototype.render = function() {
+        var delta = this.clock.getDelta();
+        var elapsed = this.clock.getElapsedTime();
+
+        // Animate Particles
+        for (var i in this.particles.vertices) {
+          this.particles.vertices[i].animate( delta, elapsed );
+        }
+
+        this.particles.verticesNeedUpdate = true;
+
+        var W = document.body.clientWidth;
+        var targetZ = 50 - 50 * ( this.mouse.x / W );
+
+        this.camera.position.z = this.camera.position.z + (targetZ - this.camera.position.z) / 50;
+
+        this.renderer.render( this.scene, this.camera );
+        requestAnimationFrame( this.render.bind(this) );
+      }
+
+      // Init Particle System --------------------------------------------------
+      ThreeDScene.prototype.initParticleSystem1 = function() {
+        // Create the particle variables
+        var particleCount = 500;
+        this.particles = new THREE.Geometry();
+        var diameter = 600;
+        var size = 10;
+
+        // Create the particle variables
+        var pMaterial = new THREE.PointsMaterial({
+          color: 0x003270, //0xffffff, //0x003270,
+          size: size,
+          fog: true,
+          blending: THREE.AdditiveBlending,
+          transparent: true,
+          alphaTest: 0.5,
+          depthTest: true
+        })
+
+        // Now create the individual particles
+        for (var p = 0; p < particleCount; p++) {
+          // Create a particle with random diameter
+          var pX = Math.random() * diameter - diameter / 2,
+              pY = Math.random() * diameter - diameter / 2,
+              pZ =Math.random() * diameter - diameter / 2,
+              particle = new THREE.Vector3(pX, pY, pZ);
+
+          // Random offset for movement
+          particle.offset = Math.random() * 1000;
+
+          // Save original position for further use
+          particle.originalPosition = {
+            x: particle.x,
+            y: particle.y,
+            z: particle.z
+          };
+
+          // Create animate function
+          particle.animate = function( delta, elapsed ) {
+            this.x -= (10 + 10 * Math.sin(this.offset + elapsed / 20)) * delta;
+            this.z = this.originalPosition.z + Math.sin(this.offset + elapsed / 5) * 20;
+            this.y = this.originalPosition.y + Math.sin(this.offset + elapsed / 10) * 50;
+
+            // Keep particles in screen
+            if (this.x < -300) {
+              this.x = 300;
+            }
+          }
+
+          // Add it to the geometry
+          this.particles.vertices.push(particle);
+        }
+
+        // Create the particle system ------------------------------------------
+        var particleSystem = new THREE.Points(
+          this.particles,
+          pMaterial
+        )
+
+        // Set sorting
+        particleSystem.sortParticles = true;
+
+        // Add the system to the scene
+        this.scene.add( particleSystem );
+      }
+
+      // Keep track on mouse position whenever mouse is moved
+      ThreeDScene.prototype.initMouseEvents = function() {
+        document.addEventListener("mousemove", function(e) {
+          this.mouse.x = e.pageX;
+          this.mouse.y = e.pageY;
+        }.bind(this));
+      }
+
+      // Run when DOM is ready
+      document.addEventListener("DOMContentLoaded", function() {
+        // Make sure the console is clear
+        console.clear();
+
+        // Initiate Scene
+        var threeDScene = new ThreeDScene();
+        threeDScene.init();
+      });
+
+    </script>
+
+  </body>
+</html>
+
+<!-- function init() {
+    renderer = new THREE.WebGLRenderer, renderer.setSize(window.innerWidth, window.innerHeight), renderer.autoClear = !1, renderer.setClearColor(0, 1), document.getElementById("canvas").appendChild(renderer.domElement), scene = new THREE.Scene, scene.fog = new THREE.Fog(0, 1, 1e3), camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1e3), camera.position.z = 400, scene.add(camera), object = new THREE.Object3D, circle = new THREE.Object3D, skelet = new THREE.Object3D, particle = new THREE.Object3D, scene.add(object), scene.add(circle), scene.add(skelet), scene.add(particle);
+    for (var e = new THREE.TetrahedronGeometry(2, 0),
+             n = new THREE.TetrahedronGeometry(2, 2),
+             a = new THREE.MeshPhongMaterial({
+                color: 3487029,
+                shading: THREE.FlatShading
+            }),
+            r = new THREE.MeshPhongMaterial({
+                color: 1118481,
+                shading: THREE.FlatShading
+            }),
+            t = 0; 50 > t; t++) {
+        var o = new THREE.Mesh(e, a);
+            o.position.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).normalize(), o.position.multiplyScalar(700 * Math.random()), o.rotation.set(2 * Math.random(), 2 * Math.random(), 2 * Math.random()), o.scale.x = o.scale.y = o.scale.z = 15, object.add(o)
+        }
+    for (var t = 0; 1e3 > t; t++) {
+        var o = new THREE.Mesh(n, r);
+        o.position.set(Math.random() - .5, Math.random() - .5, Math.random() - .5).normalize(), o.position.multiplyScalar(700 * Math.random()), o.rotation.set(2 * Math.random(), 2 * Math.random(), 2 * Math.random()), particle.add(o)
+    }
+    var i = new THREE.IcosahedronGeometry(7, 1),
+        d = new THREE.IcosahedronGeometry(15, 1),
+        c = new THREE.MeshPhongMaterial({
+            color: 16777215,
+            shading: THREE.FlatShading
+        }),
+        s = new THREE.MeshPhongMaterial({
+            color: 5592405,
+            wireframe: !0,
+            side: THREE.DoubleSide
+        }),
+        l = new THREE.Mesh(i, c);
+    l.scale.x = l.scale.y = l.scale.z = 12, circle.add(l);
+    var E = new THREE.Mesh(d, s);
+    E.scale.x = E.scale.y = E.scale.z = 8, skelet.add(E);
+    var h = new THREE.AmbientLight(3487029);
+    scene.add(h);
+    var w = new THREE.DirectionalLight(16777215);
+    w.position.set(1, 1, 1).normalize(), scene.add(w), window.addEventListener("resize", onWindowResize, !1)
+}
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight, camera.updateProjectionMatrix(), renderer.setSize(window.innerWidth, window.innerHeight), composer.setSize(window.innerWidth, window.innerHeight)
+}
+
+function animate() {
+    requestAnimationFrame(animate),
+    object.rotation.x += .003, object.rotation.y += .003,
+    particle.rotation.x += 0, particle.rotation.y -= .004,
+    circle.rotation.x -= .002, circle.rotation.y -= .002,
+    skelet.rotation.x -= .001, skelet.rotation.y += .001,
+    renderer.clear(), renderer.render(scene, camera)
+}
+var renderer, scene, camera, composer, object, circle, skelet, particle;
+window.onload = function() {
+    init(), animate()
+}; -->
