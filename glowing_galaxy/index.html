@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="../three/three.min.js"></script>
+    <script src="../noise/perlin.js"></script>
+    <script src="../three/OrbitControls.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script>
+        var ThreeDScene = new Function();
+
+        ThreeDScene.prototype.scene = {};
+        ThreeDScene.prototype.camera = {};
+        ThreeDScene.prototype.renderer = {};
+
+        // Dimensions
+        ThreeDScene.prototype.width = window.innerWidth;
+        ThreeDScene.prototype.height = window.innerHeight;
+
+        // Init scene and start animation ----------------------------------------
+        ThreeDScene.prototype.init = function init() {
+          this.scene = new THREE.Scene();
+          this.scene.fog = new THREE.Fog(0x001a2d, 80, 140)
+          this.initCamera();
+          this.initRenderer();
+          this.initLight();
+
+          this.initShapes();
+          this.render();
+        }
+
+        // Init Camera -----------------------------------------------------------
+        ThreeDScene.prototype.initCamera = function() {
+          this.camera = new THREE.PerspectiveCamera( 45, this.width / this.height, 0.1, 200 );
+          this.camera.position.y = 30;
+          this.camera.position.z = 5;
+          this.camera.position.x = 70;
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+
+          this.controls = new THREE.OrbitControls( this.camera, this.renderer.domElement );
+				  this.controls.enablePan = false;
+          // this.controls.enableZoom = false;
+
+        }
+
+        // Init Renderer ---------------------------------------------------------
+        ThreeDScene.prototype.initRenderer = function() {
+          this.renderer = new THREE.WebGLRenderer({ antialias: true });
+          this.renderer.setSize( this.width, this.height );
+
+          // Background Color
+          this.renderer.setClearColor(
+            0x001a2d
+          );
+
+          // Enable shadowmaps
+          this.renderer.shadowMap.enabled = true;
+          this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+          // Set autoclear to false. We're doing this manually
+          // This is required for shaders to work
+          this.renderer.autoClear = true;
+          document.body.appendChild( this.renderer.domElement );
+
+          return;
+        }
+
+        // Init Lighting ---------------------------------------------------------
+        ThreeDScene.prototype.initLight = function() {
+
+
+          var h = new THREE.AmbientLight(3487029);
+          this.scene.add(h);
+
+          var w = new THREE.DirectionalLight( 16777215 );
+          w.position.set(1,1,1).normalize(),
+          this.scene.add(w)
+        }
+
+        // Init Shapes -----------------------------------------------------------
+        ThreeDScene.prototype.initShapes = function() {
+          var self = this;
+
+          var object = new THREE.Object3D();
+
+          this.scene.add(object);
+
+          var geometry = new THREE.PlaneGeometry( 250, 250, 120, 120 );
+          var m = new THREE.Matrix4();
+          m.makeRotationX(Math.PI * -0.5);
+          geometry.applyMatrix(m);
+
+          for (var i = 0; i < geometry.vertices.length; i++) {
+            var vector = geometry.vertices[i];
+            var ratio = noise.simplex3(vector.x * 0.03, vector.z * 0.03, 0);
+            vector.y = ratio * 10;
+          }
+
+          var material = new THREE.MeshPhongMaterial({
+            color: 0x198257,
+            emissive: 0x032f50,
+            // wireframe: true
+          });
+
+          var plane = new THREE.Mesh(geometry, material);
+
+          object.add(plane);
+
+        }
+
+        // Render Method ---------------------------------------------------------
+        ThreeDScene.prototype.render = function() {
+          var collection = this.scene.children
+
+          // console.log(collection[2].children[0].geometry.vertices["0"])
+
+          window.addEventListener('resize', onWindowResize.bind(this), false);
+
+          requestAnimationFrame( this.render.bind(this) );
+
+          this.controls.update();
+
+          this.renderer.render( this.scene, this.camera );
+        }
+
+        function onWindowResize(e) {
+          this.camera.updateProjectionMatrix();
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          // console.log(e)
+        }
+
+        // Run when DOM is ready
+        document.addEventListener("DOMContentLoaded", function() {
+          // Make sure the console is clear
+          console.clear();
+
+          // Initiate Scene
+          var threeDScene = new ThreeDScene();
+          threeDScene.init();
+        });
+    </script>
+
+  </body>
+</html>
