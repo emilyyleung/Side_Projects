@@ -75,7 +75,8 @@
 
         // Init Lighting ---------------------------------------------------------
         ThreeDScene.prototype.initLight = function() {
-
+          var moonLight = new THREE.PointLight(0xffffff, 2, 150);
+          this.scene.add(moonLight);
 
           var h = new THREE.AmbientLight(3487029);
           this.scene.add(h);
@@ -114,11 +115,74 @@
 
           object.add(plane);
 
+          var stars = new THREE.Group();
+          this.scene.add(stars);
+          var starsLights = new THREE.Group();
+          this.scene.add(starsLights);
+          var starsAmount = 20;
+          function createStars() {
+            var geometry = new THREE.SphereGeometry(0.3, 16, 16);
+            var material = new THREE.MeshBasicMaterial({color:0xffffff});
+            for(var i=0; i<starsAmount; i++){
+              var star = new THREE.Mesh(geometry, material);
+              star.position.x = (Math.random() - 0.5) * 150;
+              star.position.z = (Math.random() - 0.5) * 150;
+              var ratio = noise.simplex3(star.position.x * 0.03, star.position.z * 0.03, 0);
+              star.position.y = ratio * 10 + 0.3;
+              stars.add(star);
+              var velX = (Math.random() + 0.1) * 0.1 * (Math.random() < 0.5?-1:1);
+              var velY = (Math.random() + 0.1) * 0.1 * (Math.random() < 0.5?-1:1);
+              star.vel - new THREE.Vector2(velX, velY);
+              var starLight = new THREE.PointLight(0xffffff, 0.8, 3);
+              starLight.position.copy(star.position);
+              starLight.position.y += 0.5;
+              starsLights.add(starLight);
+            }
+          }
+
+          function updateStar(star, index) {
+            if(star.position.x < -75) {
+              star.position.x = 75;
+            }
+            if(star.position.x > 75) {
+              star.position.x = -75;
+            }
+            if(star.position.z < -75) {
+              star.position.z = 75;
+            }
+            if(star.position.z > 75) {
+              star.position.z = -75;
+            }
+            star.position.x += star.vel.x;
+            star.position.z += star.vel.y;
+            var ratio = noise.simplex3(star.position.x * 0.03, star.position.z * 0.03, 0);
+            star.position.y = ratio * 10 + 0.3;
+
+            starsLights.children[index].position.copy(star.position);
+            starsLights.children[index].position.y += 0.5;
+          }
+
+          createStars();
+
         }
 
         // Render Method ---------------------------------------------------------
         ThreeDScene.prototype.render = function() {
           var collection = this.scene.children
+          var starsAmount = 20;
+          for (var i=0; i<starsAmount; i++) {
+            updateStar(stars.children[i], i);
+          }
+          // console.log(collection)
+          var spinnyEffect = function(thingToSpin, ySpeed) {
+            // thingToSpin.rotation.x += xSpeed;
+            thingToSpin.rotation.y += ySpeed;
+
+            return thingToSpin;
+          }
+
+          spinnyEffect(collection[3], 0.001)
+
 
           // console.log(collection[2].children[0].geometry.vertices["0"])
 

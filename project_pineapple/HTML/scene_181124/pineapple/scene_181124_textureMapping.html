@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+        var scene = new THREE.Scene();
+
+        var camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        camera.position.x = ( 43.299427);
+        camera.position.y = ( 5.387963);
+        camera.position.z = ( 42.448778 );
+        camera.up.set( 0, 0, 1 );
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        const data = [{"faces": "[10,1,0,8,1,10,8,10,9,13,7,6,8,7,1,7,2,1,7,13,12,11,7,12,5,4,6,4,13,6,13,4,3,11,2,7,24,14,15,22,24,15,22,23,24,27,20,21,22,15,21,21,15,16,21,26,27,25,26,21,19,20,18,18,20,27,27,17,18,25,21,16,35,28,32,35,34,29,34,35,32,32,33,34,33,31,34,30,33,32,40,36,41,40,43,37,42,40,41,40,42,43,42,39,43,38,42,41,48,44,49,48,51,45,50,48,49,48,50,51,57,56,52,58,53,56,54,55,58,56,57,58,60,59,63,64,63,65,65,62,64,72,66,68,72,69,67,69,72,68,69,68,73,73,71,69,78,74,76,75,78,79,85,80,82,81,85,84,50,49,46,50,47,51,54,58,57,60,63,64,63,61,65,68,70,73,78,76,79,75,79,77,85,82,84,81,84,83]", "vertices": "[-101.759422,53.929203,0.0,-73.290894,18.426273,0.0,-44.822372,-17.076656,0.0,10.662801,0.239359,0.0,12.008947,24.639988,0.0,13.355094,49.040619,0.0,-6.86968,36.691677,0.0,-27.094454,24.342733,0.0,-35.086399,46.368481,0.0,-43.078346,68.394226,0.0,-72.418884,61.161713,0.0,-24.028385,-11.604494,0.0,-3.2344,-6.132331,0.0,-4.855767,17.302614,0.0,-101.759422,53.929203,41.23291,-73.290894,18.426273,41.23291,-44.822372,-17.076656,41.23291,10.662801,0.239359,41.23291,12.008947,24.639988,41.23291,13.355094,49.040619,41.23291,-6.86968,36.691677,41.23291,-27.094454,24.342733,41.23291,-35.086399,46.368481,41.23291,-43.078346,68.394226,41.23291,-72.418884,61.161713,41.23291,-24.028385,-11.604494,41.23291,-3.2344,-6.132331,41.23291,-4.855767,17.302614,41.23291,10.662801,0.239359,0.0,10.662801,0.239359,41.23291,13.355094,49.040619,0.0,13.355094,49.040619,41.23291,12.008947,24.639988,0.0,13.355094,49.040619,20.616455,12.008947,24.639988,41.23291,10.662801,0.239359,20.616455,13.355094,49.040619,0.0,13.355094,49.040619,41.23291,-27.094454,24.342733,0.0,-27.094454,24.342733,41.23291,13.355094,49.040619,20.616455,-6.86968,36.691677,0.0,-27.094454,24.342733,20.616455,-6.86968,36.691677,41.23291,-27.094454,24.342733,0.0,-27.094454,24.342733,41.23291,-43.078346,68.394226,0.0,-43.078346,68.394226,41.23291,-27.094454,24.342733,20.616455,-35.086399,46.368481,0.0,-43.078346,68.394226,20.616455,-35.086399,46.368481,41.23291,-43.078346,68.394226,0.0,-43.078346,68.394226,41.23291,-101.759422,53.929203,0.0,-101.759422,53.929203,41.23291,-43.078346,68.394226,20.616455,-72.418884,61.161713,0.0,-72.418884,61.161713,41.23291,-101.759422,53.929203,0.0,-101.759422,53.929203,41.23291,-44.822372,-17.076656,0.0,-44.822372,-17.076656,41.23291,-73.290894,18.426273,0.0,-73.290894,18.426273,41.23291,-44.822372,-17.076656,20.616455,-44.822372,-17.076656,0.0,-44.822372,-17.076656,41.23291,-24.028385,-11.604494,0.0,-24.028385,-11.604494,41.23291,-3.2344,-6.132331,0.0,-3.2344,-6.132331,41.23291,-44.822372,-17.076656,20.616455,-3.2344,-6.132331,20.616455,-3.2344,-6.132331,0.0,-3.2344,-6.132331,41.23291,-4.855767,17.302614,0.0,-4.855767,17.302614,41.23291,-3.2344,-6.132331,20.616455,-4.855767,17.302614,20.616455,-4.855767,17.302614,0.0,-4.855767,17.302614,41.23291,10.662801,0.239359,0.0,10.662801,0.239359,41.23291,10.662801,0.239359,20.616455,-4.855767,17.302614,20.616455]", "objColour": "None", "geoName": "Texture"}]
+
+        // var loader = new THREE.TextureLoader();
+
+        // loader.load(
+        //     "http://localhost:3000/jpg/scalesResized.jpg",
+        //     function (texture) {
+        //         var material = new THREE.MeshBasicMaterial( { map: texture } )
+        //     }
+        // )
+
+        // var texture = new THREE.TextureLoader().load( "http://localhost:3000/jpg/scalesResized.jpg", undefined, function() {
+        //     var tex = texture.clone();
+        //     tex.needsUpdate - true;
+        // } );
+
+        // const material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, vertexColors: THREE.FaceColors } )
+        // const material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } )
+        
+        // material.needsUpdate = true;
+
+        // instantiate a loader
+        var loader = new THREE.TextureLoader();
+
+        // load a resource
+        loader.load(
+            // resource URL
+            'http://localhost:3000/jpg/scalesResized.jpg',
+
+            // onLoad callback
+            function ( texture ) {
+                // in this example we create the material when the texture is loaded
+                var material = new THREE.MeshBasicMaterial( {
+                    map: texture
+                } );
+            },
+
+            // onProgress callback currently not supported
+            undefined,
+
+            // onError callback
+            function ( err ) {
+                console.error( 'An error happened.' );
+            }
+        );
+
+        //
+
+        const object = new THREE.Group();
+
+        function createGroupedArray(arr, chunkSize) {
+            var groups = [], i;
+            for (i = 0; i < arr.length; i += chunkSize) {
+                groups.push(arr.slice(i, i + chunkSize));
+            }
+            return groups;
+        }
+
+        function eachGeoFaces(data) {
+            var obj = JSON.parse(data.faces);
+            var face = createGroupedArray(obj, 3);
+
+            return face;
+        }
+
+        function eachGeoVertices(data) {
+            var obj = JSON.parse(data.vertices);
+            var vert = createGroupedArray(obj, 3);
+
+            return vert;
+        }
+
+        function displayGeo(faceData, vertData, tempGeometry) {
+            for (var x = 0; x < faceData.length; x++) {
+                var face1 = faceData[x][0];
+                var face2 = faceData[x][1];
+                var face3 = faceData[x][2];
+                // console.log(face1 + "/" + face2 + "/" + face3)
+                tempGeometry.faces.push( new THREE.Face3(face1, face2, face3));
+            }
+
+            for (var x = 0; x < vertData.length; x++) {
+                var vert1 = vertData[x][0];
+                var vert2 = vertData[x][1];
+                var vert3 = vertData[x][2];
+                // console.log(vert1 + "/" + vert2 + "/" + vert3)
+                tempGeometry.vertices.push( new THREE.Vector3(vert1, vert2, vert3));
+            }
+
+            tempGeometry.computeFaceNormals();
+
+            return tempGeometry;
+        }
+
+        function loadDisplayGeom(data, object) {
+
+            for (var i = 0; i < data.length; i++) {
+
+                var singleData = data[i];
+            
+                var tempGeometry = new THREE.Geometry();
+
+                var name = data[i].geoName;
+
+                var faceData = eachGeoFaces(data[i]);
+
+                var vertData = eachGeoVertices(data[i]);
+
+                var geo = displayGeo(faceData, vertData, tempGeometry);
+
+                // var material = new THREE.MeshStandardMaterial( { color: data[i].objColour, side: THREE.DoubleSide })
+
+                // var testObject = new THREE.Mesh(geo, new THREE.MeshNormalMaterial());
+                // var testObject = new THREE.Mesh(geo, material);
+                var testObject = new THREE.Mesh(geo, material)
+
+                testObject.name = name;
+
+                object.add(testObject);
+            
+            }
+
+            return object;
+            
+        }
+
+        scene.add(loadDisplayGeom(data, object));
+
+        var ambient = new THREE.AmbientLight(0xffffff);
+        scene.add(ambient);
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(0,0,1).normalize();
+        scene.add(directionalLight);
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+                
+        window.addEventListener( 'resize', onWindowResize, false );
+
+        function onWindowResize(){
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize( window.innerWidth, window.innerHeight );
+
+        }
+        
+        var animate = function () {
+            
+            requestAnimationFrame( animate );
+            
+            renderer.render( scene, camera );
+        };
+        animate();
+    </script>
+  </body>
+</html>

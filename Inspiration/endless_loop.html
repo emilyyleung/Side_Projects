@@ -1,0 +1,112 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
+  <style>
+    #myText {
+      color: blue;
+      text-align: center;
+      height: 2em;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 id="myText"></h1>
+
+  <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // --
+      // JQuery Function
+      // --
+
+      $.fn.extend({
+        animateCss: function(animationName) {
+          var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+          $(this).addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+          });
+        }
+      });
+
+      // --
+      // Custom Functions
+      // --
+
+
+      var fadeOut = function() {
+        $('#myText').animateCss('fadeOutUp');
+      };
+
+      var fadeIn = function() {
+        $('#myText').animateCss('fadeInUp');
+      };
+
+      var switchText = function() {
+        fadeIn();
+
+        $('#myText').html(sentences[i]);
+
+        if (i == (sentences.length - 1)) {
+          i = 0;
+        } else {
+          i++;
+        }
+
+        setTimeout(switchText, changeInterval);
+      };
+
+      // --
+      // Variables
+      // --
+
+      var sentences = [
+        "Yo, Welcome!",
+        "I'd ask you why you're here but it's obvious",
+        "You're a creator and you want to create",
+        "and fortunately you can do that here",
+        "so it looks like you're in the right place",
+        "so I'll let you get on...",
+        "or you could read all my messages",
+        "cos I can keep on going",
+        "I mean we are here to start a creative revolution",
+        "maybe I'll even say something crazy at one point",
+        "like this weekend's lottery numbers!",
+        "(or not)",
+        "I'm not a blooming fortune teller",
+        "although I can tell you that if you sign up to Vidsy...",
+        "things will get much better for you!",
+        "But in all seriousness...",
+        "I'd start scrolling down now",
+        "I'm bored, you're bored",
+        "I've even left the tap running",
+        "I didn't know you'd be this long",
+        "Oh man, I've even got a hot date tonight...",
+        "and my Mum bought me some new trousers",
+        "but I goshdarnit love creating so much that I'm still here",
+        "and it appears that you are too!",
+        "which is a good thing",
+        "I guess...",
+        "So if you haven't already signed up",
+        "I think now would be an appropriate time",
+        "my laptop's running out of battery",
+        "and I left the charger on the train",
+        "(nightmare I know!)",
+        "Eeek, 1% now",
+        "so I'm going to sign off",
+        "If you don't sign up",
+        "Expect a Liam Neeson \"Taken\" style affair",
+        "I will find you and I will...",
+        "...",
+        "USER HAS DISCONNECTED"
+      ];
+      var i = 0;
+      var changeInterval = 2500;
+
+      // --
+      // Start Script
+      // --
+
+      switchText();
+    });
+  </script>
+</body>

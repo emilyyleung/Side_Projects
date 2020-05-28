@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      var scene = new THREE.Scene();
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+			
+			var tempGeometry = new THREE.Geometry();
+tempGeometry.vertices.push( new THREE.Vector3(-3, -2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(3, -2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(3, -2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, -2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(3, -2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(3, 2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(3, 2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(3, -2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(3, 2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, 2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, 2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(3, 2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, 2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, -2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, -2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, 2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, -2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, 2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(3, 2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(3, -2, -2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, -2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(3, -2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(3, 2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(-3, 2, 2));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -11.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -11.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -16.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -10.9195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -10.4195709228516, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.9195709228516, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.41957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -16.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -10.4195709228516, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -9.91957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.91957092285156, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.41957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.41957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-13.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -16.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.91957092285156, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -9.91957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -10.4195709228516, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-13.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-13.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -11.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -16.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.9195709228516, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -10.4195709228516, -17.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -10.9195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -11.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -11.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -18.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -10.9195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -10.4195709228516, -18.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.9195709228516, -18.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.41957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -18.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -9.91957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-11.6757459640503, -10.4195709228516, -18.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.91957092285156, -18.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.41957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.41957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-13.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -18.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -9.91957092285156, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -9.91957092285156, -18.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -10.4195709228516, -18.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-13.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-13.1757459640503, -10.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -11.4195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.4195709228516, -18.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -10.9195709228516, -17.6644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.1757459640503, -10.9195709228516, -18.1644992828369));
+tempGeometry.vertices.push( new THREE.Vector3(-12.6757459640503, -10.4195709228516, -18.1644992828369));
+tempGeometry.faces.push( new THREE.Face3(0, 1, 2));
+tempGeometry.faces.push( new THREE.Face3(4, 5, 6));
+tempGeometry.faces.push( new THREE.Face3(8, 9, 10));
+tempGeometry.faces.push( new THREE.Face3(12, 13, 14));
+tempGeometry.faces.push( new THREE.Face3(16, 17, 18));
+tempGeometry.faces.push( new THREE.Face3(20, 21, 22));
+tempGeometry.faces.push( new THREE.Face3(25, 28, 30));
+tempGeometry.faces.push( new THREE.Face3(28, 29, 30));
+tempGeometry.faces.push( new THREE.Face3(29, 27, 30));
+tempGeometry.faces.push( new THREE.Face3(26, 29, 28));
+tempGeometry.faces.push( new THREE.Face3(32, 36, 35));
+tempGeometry.faces.push( new THREE.Face3(36, 37, 35));
+tempGeometry.faces.push( new THREE.Face3(37, 34, 35));
+tempGeometry.faces.push( new THREE.Face3(33, 37, 36));
+tempGeometry.faces.push( new THREE.Face3(39, 43, 42));
+tempGeometry.faces.push( new THREE.Face3(43, 44, 42));
+tempGeometry.faces.push( new THREE.Face3(44, 41, 42));
+tempGeometry.faces.push( new THREE.Face3(40, 44, 43));
+tempGeometry.faces.push( new THREE.Face3(46, 51, 50));
+tempGeometry.faces.push( new THREE.Face3(51, 49, 50));
+tempGeometry.faces.push( new THREE.Face3(49, 48, 50));
+tempGeometry.faces.push( new THREE.Face3(47, 49, 51));
+tempGeometry.faces.push( new THREE.Face3(53, 58, 56));
+tempGeometry.faces.push( new THREE.Face3(56, 58, 57));
+tempGeometry.faces.push( new THREE.Face3(57, 58, 55));
+tempGeometry.faces.push( new THREE.Face3(54, 56, 57));
+tempGeometry.faces.push( new THREE.Face3(60, 64, 63));
+tempGeometry.faces.push( new THREE.Face3(63, 64, 65));
+tempGeometry.faces.push( new THREE.Face3(65, 64, 62));
+tempGeometry.faces.push( new THREE.Face3(61, 63, 65));
+tempGeometry.faces.push( new THREE.Face3(67, 71, 70));
+tempGeometry.faces.push( new THREE.Face3(70, 71, 72));
+tempGeometry.faces.push( new THREE.Face3(72, 71, 69));
+tempGeometry.faces.push( new THREE.Face3(68, 70, 72));
+tempGeometry.faces.push( new THREE.Face3(74, 79, 77));
+tempGeometry.faces.push( new THREE.Face3(77, 79, 78));
+tempGeometry.faces.push( new THREE.Face3(78, 79, 76));
+tempGeometry.faces.push( new THREE.Face3(75, 77, 78));
+tempGeometry.faces.push( new THREE.Face3(0, 2, 3));
+tempGeometry.faces.push( new THREE.Face3(4, 6, 7));
+tempGeometry.faces.push( new THREE.Face3(8, 10, 11));
+tempGeometry.faces.push( new THREE.Face3(12, 14, 15));
+tempGeometry.faces.push( new THREE.Face3(16, 18, 19));
+tempGeometry.faces.push( new THREE.Face3(20, 22, 23));
+tempGeometry.computeFaceNormals();
+var testObject = new THREE.Mesh( tempGeometry, new THREE.MeshNormalMaterial() );
+scene.add(testObject);
+
+			var camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
+			camera.position.x = ( -59.539815);
+			camera.position.y = ( 77.91674);
+			camera.position.z = ( 30.14459 );
+			camera.up.set( 0, 0, 1 );
+			
+			var target = new THREE.Vector3( -12.175746, -10.419571, -17.6645 );
+			
+			camera.lookAt(target);
+			
+			var controls = new THREE.OrbitControls(camera, renderer.domElement);
+			
+			window.addEventListener( 'resize', onWindowResize, false );
+
+			function onWindowResize(){
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+			
+			var animate = function () {
+				
+				requestAnimationFrame( animate );
+				
+				renderer.render( scene, camera );
+			};
+            animate();
+
+			
+    </script>
+  </body>
+</html>

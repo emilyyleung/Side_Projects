@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+        var scene = new THREE.Scene();
+
+        var camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        camera.position.x = ( 43.299427);
+        camera.position.y = ( 5.387963);
+        camera.position.z = ( 42.448778 );
+        camera.up.set( 0, 0, 1 );
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+
+        const data = [{"faces": "[10,1,0,8,1,10,8,10,9,13,7,6,8,7,1,7,2,1,7,13,12,11,7,12,5,4,6,4,13,6,13,4,3,11,2,7,24,14,15,22,24,15,22,23,24,27,20,21,22,15,21,21,15,16,21,26,27,25,26,21,19,20,18,18,20,27,27,17,18,25,21,16,35,28,32,35,34,29,34,35,32,34,32,33,33,31,34,40,36,41,40,43,37,42,40,41,40,42,43,42,39,43,38,42,41,48,44,49,48,51,45,50,48,49,48,50,51,57,56,52,58,53,56,54,55,58,56,57,58,60,59,63,64,63,65,65,62,64,72,66,68,72,69,67,69,72,68,69,68,73,73,71,69,78,74,76,75,78,79,85,80,82,81,85,84,32,30,33,50,49,46,50,47,51,54,58,57,60,63,64,63,61,65,68,70,73,78,76,79,75,79,77,85,82,84,81,84,83]", "vertices": "[-74.66497,29.586475,0.0,-46.196442,-5.916458,0.0,-17.727921,-41.419388,0.0,37.757256,-24.103363,0.0,39.103401,0.297256,0.0,40.449547,24.697895,0.0,20.224771,12.348946,0.0,0.0,0.0,0.0,-7.991943,22.025749,0.0,-15.983894,44.051502,0.0,-45.324432,36.818989,0.0,3.066067,-35.94722,0.0,23.860052,-30.475052,0.0,22.238684,-7.040115,0.0,-74.66497,29.586475,41.23291,-46.196442,-5.916458,41.23291,-17.727921,-41.419388,41.23291,37.757256,-24.103363,41.23291,39.103401,0.297256,41.23291,40.449547,24.697895,41.23291,20.224771,12.348946,41.23291,0.0,0.0,41.23291,-7.991943,22.025749,41.23291,-15.983894,44.051502,41.23291,-45.324432,36.818989,41.23291,3.066067,-35.94722,41.23291,23.860052,-30.475052,41.23291,22.238684,-7.040115,41.23291,37.757256,-24.103363,0.0,37.757256,-24.103363,41.23291,40.449547,24.697895,0.0,40.449547,24.697895,41.23291,39.103401,0.297256,0.0,40.449547,24.697895,20.616455,39.103401,0.297256,41.23291,37.757256,-24.103363,20.616455,40.449547,24.697895,0.0,40.449547,24.697895,41.23291,0.0,0.0,0.0,0.0,0.0,41.23291,40.449547,24.697895,20.616455,20.224771,12.348946,0.0,0.0,0.0,20.616455,20.224771,12.348946,41.23291,0.0,0.0,0.0,0.0,0.0,41.23291,-15.983894,44.051502,0.0,-15.983894,44.051502,41.23291,0.0,0.0,20.616455,-7.991943,22.025749,0.0,-15.983894,44.051502,20.616455,-7.991943,22.025749,41.23291,-15.983894,44.051502,0.0,-15.983894,44.051502,41.23291,-74.66497,29.586475,0.0,-74.66497,29.586475,41.23291,-15.983894,44.051502,20.616455,-45.324432,36.818989,0.0,-45.324432,36.818989,41.23291,-74.66497,29.586475,0.0,-74.66497,29.586475,41.23291,-17.727921,-41.419388,0.0,-17.727921,-41.419388,41.23291,-46.196442,-5.916458,0.0,-46.196442,-5.916458,41.23291,-17.727921,-41.419388,20.616455,-17.727921,-41.419388,0.0,-17.727921,-41.419388,41.23291,3.066067,-35.94722,0.0,3.066067,-35.94722,41.23291,23.860052,-30.475052,0.0,23.860052,-30.475052,41.23291,-17.727921,-41.419388,20.616455,23.860052,-30.475052,20.616455,23.860052,-30.475052,0.0,23.860052,-30.475052,41.23291,22.238684,-7.040115,0.0,22.238684,-7.040115,41.23291,23.860052,-30.475052,20.616455,22.238684,-7.040115,20.616455,22.238684,-7.040115,0.0,22.238684,-7.040115,41.23291,37.757256,-24.103363,0.0,37.757256,-24.103363,41.23291,37.757256,-24.103363,20.616455,22.238684,-7.040115,20.616455]", "objColour": "#000fff", "geoName": "Texture"}]
+
+        // var texture = new THREE.TextureLoader().load( "C:/Users/Emily/Documents/GitHub/Side_Projects/project_pineapple/ImageRef/scales.jpg" );
+
+        // const material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, vertexColors: THREE.FaceColors } )
+        // const material = new THREE.MeshBasicMaterial( { map: texture } )
+
+        const object = new THREE.Group();
+
+        function createGroupedArray(arr, chunkSize) {
+            var groups = [], i;
+            for (i = 0; i < arr.length; i += chunkSize) {
+                groups.push(arr.slice(i, i + chunkSize));
+            }
+            return groups;
+        }
+
+        function eachGeoFaces(data) {
+            var obj = JSON.parse(data.faces);
+            var face = createGroupedArray(obj, 3);
+
+            return face;
+        }
+
+        function eachGeoVertices(data) {
+            var obj = JSON.parse(data.vertices);
+            var vert = createGroupedArray(obj, 3);
+
+            return vert;
+        }
+
+        function displayGeo(faceData, vertData, tempGeometry) {
+            for (var x = 0; x < faceData.length; x++) {
+                var face1 = faceData[x][0];
+                var face2 = faceData[x][1];
+                var face3 = faceData[x][2];
+                // console.log(face1 + "/" + face2 + "/" + face3)
+                tempGeometry.faces.push( new THREE.Face3(face1, face2, face3));
+            }
+
+            for (var x = 0; x < vertData.length; x++) {
+                var vert1 = vertData[x][0];
+                var vert2 = vertData[x][1];
+                var vert3 = vertData[x][2];
+                // console.log(vert1 + "/" + vert2 + "/" + vert3)
+                tempGeometry.vertices.push( new THREE.Vector3(vert1, vert2, vert3));
+            }
+
+            tempGeometry.computeFaceNormals();
+
+            return tempGeometry;
+        }
+
+        function loadDisplayGeom(data, object) {
+
+            for (var i = 0; i < data.length; i++) {
+
+                var singleData = data[i];
+            
+                var tempGeometry = new THREE.Geometry();
+
+                var name = data[i].geoName;
+
+                var faceData = eachGeoFaces(data[i]);
+
+                var vertData = eachGeoVertices(data[i]);
+
+                var geo = displayGeo(faceData, vertData, tempGeometry);
+
+                var material = new THREE.MeshStandardMaterial( { color: data[i].objColour, side: THREE.DoubleSide })
+
+                // var testObject = new THREE.Mesh(geo, new THREE.MeshNormalMaterial());
+                // var testObject = new THREE.Mesh(geo, material);
+                var testObject = new THREE.Mesh(geo, material)
+
+                testObject.name = name;
+
+                object.add(testObject);
+            
+            }
+
+            return object;
+            
+        }
+
+        scene.add(loadDisplayGeom(data, object));
+
+        var ambient = new THREE.AmbientLight(0xffffff);
+        scene.add(ambient);
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(0,0,1).normalize();
+        scene.add(directionalLight);
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+                
+        window.addEventListener( 'resize', onWindowResize, false );
+
+        function onWindowResize(){
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize( window.innerWidth, window.innerHeight );
+
+        }
+        
+        var animate = function () {
+            
+            requestAnimationFrame( animate );
+            
+            renderer.render( scene, camera );
+        };
+        animate();
+    </script>
+  </body>
+</html>
