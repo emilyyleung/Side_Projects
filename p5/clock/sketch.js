@@ -4,13 +4,6 @@ let clockDiameter = clockRadius*2
 
 let hr, mn, sc;
 
-function timeFormat(time) {
-	if (time.toString().length < 2) {
-		time = '0' + time.toString()
-	}
-	return time
-}
-
 function setup() {
 	createCanvas(canvasSize, canvasSize);
 	angleMode(DEGREES)
@@ -19,9 +12,9 @@ function setup() {
 function draw() {
 	background("#dee3e2");
 	
-	hr = timeFormat(hour());
-	mn = timeFormat(minute());
-	sc = timeFormat(second());
+	hr = nf(hour(), 2);
+	mn = nf(minute(), 2);
+	sc = nf(second(), 2);
 
 	noStroke();
 	textSize(20);
