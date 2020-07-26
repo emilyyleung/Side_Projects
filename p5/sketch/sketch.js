@@ -69,7 +69,7 @@ var colourPicker = function( cp ) { // p could be any variable name
 		let g = cp.green(chosen);
 		let b = cp.blue(chosen);
 
-		cp.text("r: " + r +"\ng: " + g + "\nb: " + b, cp.width/2, 400);
+		cp.text("r: " + r +"\ng: " + g + "\nb: " + b, cp.width/2, 200);
 	};
 
 	cp.mousePressed = function() {
