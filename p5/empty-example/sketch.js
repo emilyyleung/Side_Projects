@@ -98,8 +98,8 @@ function draw() {
 
 			text(currentMin + "m " + currentSec + "s" , width/2, height/2);
 
-			text("ROUND\n" + currentRound , 50, height/2);
-			text("ROUND\n" + currentRound , width - 50, height/2);
+			// text("ROUND\n" + currentRound , 50, height/2);
+			// text("ROUND\n" + currentRound , width - 50, height/2);
 
 			if (currentSec > 0 && currentSec <= 30) {
 				fill("#18b0b0");
@@ -131,14 +131,16 @@ function draw() {
 				arc(0, 0, clockDiameter-30, clockDiameter-30, 180, secHand)
 			}
 
-			// for (let r = 0; r <= currentRound; r ++) {
-			// 	let angle = (r / rounds) * -360
-			// 	let x = (clockRadius - 15) * sin(angle)
-			// 	let y = (clockRadius - 15) * cos(angle)
-			// 	strokeWeight(10);
-			// 	stroke(255);
-			// 	point(x, y)
-			// }
+			rotate(-90)
+
+			for (let r = 0; r < currentRound; r ++) {
+				let angle = (r / rounds) * 360
+				let x = (clockRadius - 15) * sin(-angle)
+				let y = (clockRadius - 15) * cos(-angle)
+				strokeWeight(10);
+				stroke(255);
+				point(x, y)
+			}
 
 		}
 	} else {
