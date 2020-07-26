@@ -2,13 +2,15 @@ let canvasSize = 400;
 let clockRadius = 100;
 let clockDiameter = clockRadius*2
 
-let rounds = 1;
+let rounds;
+// let rounds = 1;
 let startSecond = 5;
 let exercises = ["Marching High Knees", "10 Punches Shuffle", "Floor Touch Squats", "High Knee Shoulder Press", "Power Knees"]
 let encouragements = ["YOU GOT THIS!", "NO PAIN, NO GAIN!", "KEEP IT UP!", "GREAT JOB!", "HANG IN THERE!", "COME ON, YOU CAN DO IT!", "DON'T GIVE UP", "IT'S NOT MEANT TO BE EASY!", "KEEP GOING!", "DON'T QUIT NOW!"]
 let customEncouragements = [];
 
-let endTime = rounds * exercises.length
+// let endTime = rounds * exercises.length
+let endTime;
 
 let countText;
 let timeLeft;
@@ -35,6 +37,18 @@ function secondsToMinsSecs(seconds) {
 function setup() {
 	createCanvas(canvasSize, canvasSize);
 	angleMode(DEGREES)
+
+	let params = getURLParams();
+	console.log(params)
+	
+	if (typeof(params.rounds) == typeof("hello")) {
+		rounds = params.rounds
+	} else {
+		rounds = 4;
+	}
+
+	endTime = rounds * exercises.length
+
 	timeLeft = minutesToSeconds(endTime)
 
 	for (let e = 0; e < endTime; e ++) {
@@ -81,7 +95,7 @@ function draw() {
 			fill("#116979");
 			textAlign(CENTER, CENTER);
 			textFont("Cutive Mono")
-
+			textStyle(BOLD)
 			text("NICE\nWORK", width/2, height/2);
 
 			// STOP THE SKETCH

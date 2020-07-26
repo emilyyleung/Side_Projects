@@ -48,7 +48,7 @@ function draw() {
 
     img.updatePixels();
 
-    // noSmooth();
+    noSmooth();
     image(img, 0, 0, canvasSize, canvasSize);
 
   	colorMode(RGB)
