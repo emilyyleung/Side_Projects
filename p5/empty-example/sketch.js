@@ -48,7 +48,7 @@ function draw() {
 
     img.updatePixels();
 
-    noSmooth();
+    // noSmooth();
     image(img, 0, 0, canvasSize, canvasSize);
 
   	colorMode(RGB)
@@ -57,12 +57,30 @@ function draw() {
   	} else {
   		fill(chosen)
   	}
-
+  	stroke(255);
+  	strokeWeight(2);
     ellipse(mouseX, mouseY, 30)
+
+	noStroke();
+	textSize(20);
+	fill(255);
+	textAlign(CENTER, CENTER);
+	textFont("Cutive Mono")
+	textStyle(BOLD)
+
+	let r = red(chosen)
+	let g = green(chosen)
+	let b = blue(chosen)
+
+	text("r: " + r +"\ng: " + g + "\nb: " + b, width/2, height/2);
 }
 
 function mousePressed() {
-	let mx = map(mouseX, 0, canvasSize, 0, canvasDivision)
-	let my = map(mouseY, 0, canvasSize, 0, canvasDivision)
-	chosen = img.get(mx, my);
+	if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+		let mx = map(mouseX, 0, canvasSize, 0, canvasDivision)
+		let my = map(mouseY, 0, canvasSize, 0, canvasDivision)
+		chosen = img.get(mx, my);
+	} else {
+		// chosen = color(0, 0, 255);
+	}
 }
