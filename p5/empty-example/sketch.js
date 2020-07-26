@@ -2,7 +2,7 @@ let canvasSize = 400;
 let clockRadius = 100;
 let clockDiameter = clockRadius*2
 
-let rounds = 4;
+let rounds = 1;
 let startSecond = 5;
 let exercises = ["Marching High Knees", "10 Punches Shuffle", "Floor Touch Squats", "High Knee Shoulder Press", "Power Knees"]
 let encouragements = ["YOU GOT THIS!", "NO PAIN, NO GAIN!", "KEEP IT UP!", "GREAT JOB!", "HANG IN THERE!", "COME ON, YOU CAN DO IT!", "DON'T GIVE UP", "IT'S NOT MEANT TO BE EASY!", "KEEP GOING!", "DON'T QUIT NOW!"]
@@ -16,7 +16,7 @@ let millisecond;
 let counter = 0;
 let round = 0;
 
-let finishColours = ["#120136", "#035AA6", "#40BAD5", "#FCBF1E","#F7A231", "#F18444", "#E64969", "#E663A2", "#6C2CF5", "#4C159E","#120136", "#035AA6", "#40BAD5", "#FCBF1E", "#F7A231", "#F18444"]
+let finishColours = ["#FCBF1E","#F7A231", "#F18444", "#E64969", "#E663A2", "#6C2CF5", "#4C159E","#120136", "#035AA6", "#40BAD5", "#FCBF1E", "#F7A231", "#F18444","#40BAD5", "#035AA6",  "#120136"]
 
 let mn, sc;
 
@@ -58,10 +58,23 @@ function draw() {
 		// WHEN THE TIMER FINISHES - I.E. REACHES 00m 00s
 		if (result == 0) {
 
-			for (let j = 0; j < finishColours.length; j ++) {
-				stroke(finishColours[j]);
-				arc(width/2, height/2, startDiameter + (j * 30), startDiameter + (j * 30), 0, 360)
-			}
+	// 		for (let j = 0; j < finishColours.length; j ++) {
+	// 			stroke(finishColours[j]);
+	// 			arc(width/2, height/2, startDiameter + (j * 30), startDiameter + (j * 30), 0, 360)
+	// 		}
+
+		let fromCol = color("#de7119")
+		let toCol = color("#18b0b0")
+
+		let ringCount = 25
+
+		for (let j = 0; j < ringCount; j ++) {
+			let col = lerpColor(fromCol, toCol, j/ringCount)
+			stroke(col);
+			strokeWeight(1);
+			noFill();
+			ellipse(width/2, height/2, startDiameter + (j*20))
+		}
 
 			noStroke();
 			textSize(20);
@@ -86,7 +99,7 @@ function draw() {
 			let exercise = exercises[(endTime - currentMin - 1) % exercises.length]
 			let nextExercise = exercises[(endTime - currentMin) % exercises.length]
 
-			if (endTime - currentMin > 19) {
+			if (endTime - currentMin > (endTime - 1)) {
 				nextExercise = "NOTHING, WOO HOO!"
 			}
 
@@ -97,9 +110,6 @@ function draw() {
 			textFont("Cutive Mono")
 
 			text(currentMin + "m " + currentSec + "s" , width/2, height/2);
-
-			// text("ROUND\n" + currentRound , 50, height/2);
-			// text("ROUND\n" + currentRound , width - 50, height/2);
 
 			if (currentSec > 0 && currentSec <= 30) {
 				fill("#18b0b0");
